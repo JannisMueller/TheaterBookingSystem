@@ -8,16 +8,30 @@ public class CustomerDB {
 
     ResultSet resultSet = null;
 
-    public static void createCustomer() {
+    public static void createCustomer(Customer newCustomer) {
+
+        String firstname = newCustomer.getFirstname();
+        String lastname = newCustomer.getLastname();
+        String email = newCustomer.getEmail();
+        String password = newCustomer.getPassword();
+        String phone = newCustomer.getPhone();
+
+        String sql =    "INSERT INTO customer (FirstName, LastName, Email, Password, Phone) " +
+                        "VALUES " +
+                        "(?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(connectionUrl);
-            Statement statement = conn.createStatement();) {
+            Statement statement = conn.createStatement();
+            PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
-            String sql = "INSERT INTO customer (FirstName, LastName, Email, Password, Phone) VALUES " +
-                    "('Albert', 'Andersson', 'andersson.albert@gmail.com', 'losenord', '0730550834')";
+            preparedStatement.setString(1, firstname);
+            preparedStatement.setString(2, lastname);
+            preparedStatement.setString(3, email);
+            preparedStatement.setString(4, password);
+            preparedStatement.setString(5, phone);
 
-            statement.execute(sql);
-
+            int insertedRows = preparedStatement.executeUpdate();
+            System.out.println("Inserted rows: " + insertedRows);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
