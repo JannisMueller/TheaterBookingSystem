@@ -91,6 +91,7 @@ public class LogInPage extends Application {
                 if (CustomerDB.loginCustomer(passedInUserName, passedInPassword)) {
                     // Customer object with e-mail of logged in customer
                     // Can be used on order confirmation page for finding correct userdetails
+                    // Use "LogInPage.loggedInCustomer.getEmail()" to get logged in user in other stages.
                     loggedInCustomer.setEmail(tfEmail.getText());
 
                     Payment payment = new Payment();
