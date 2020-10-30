@@ -16,6 +16,11 @@ public class Customer {
         this.password = password;
     }
 
+    // Used for storing logged in user
+    public Customer(String email) {
+        this.email = email;
+    }
+
     public String getFirstname() {
         return firstname;
     }

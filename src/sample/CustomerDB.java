@@ -40,30 +40,44 @@ public class CustomerDB {
 
     }
 
+    public static boolean loginCustomer(String username, String password) {
 
-}
+        String sql =    "SELECT Email, Password " +
+                        "FROM Customer " +
+                        "WHERE Email = ? " +
+                        "AND Password = ?";
 
-/*
+        try(Connection conn = DriverManager.getConnection(connectionUrl);
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            ) {
 
-    public static void testSelection() {
+            preparedStatement.setString(1,username);
+            preparedStatement.setString(2,password);
 
-        try (Connection connection = DriverManager.getConnection(url);
-             Statement statement = connection.createStatement();) {
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-            // Create and execute a SELECT SQL statement.
-//            String selectSql = "SELECT TOP 1 LastName from bookingTicket";
+            if(resultSet.next()) {
+                System.out.println("User details correct!");
+                resultSet.close();
+                return true;
 
-            String selectSql = "INSERT INTO bookingTicket (FirstName, LastName, email) VALUES ('Albert', 'Andersson', 'andersson.albert@gmail.com')";
+            } else {
+                System.out.println("User details incorrect!");
+                resultSet.close();
+                return false;
+            }
 
-            statement.execute(selectSql);
 
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
         }
-        catch (SQLException e) {
-            e.printStackTrace();
+
+
         }
 
 
     }
 
 
- */

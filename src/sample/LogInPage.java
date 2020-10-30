@@ -15,11 +15,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.sql.*;
-
 public class LogInPage extends Application {
 
     public static TextField tfEmail = new TextField();
+    public static Customer loggedInCustomer = new Customer("null");
 
     @Override
     public void start(Stage stage2) {
@@ -85,37 +84,24 @@ public class LogInPage extends Application {
         bntLogIn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
                 String passedInUserName = tfEmail.getText();
                 String passedInPassword = pfPassword.getText();
 
-                try {
-                    Connection conn = DriverManager.getConnection(Datasource.CONNECTION_STRING);
+                // If the login i successfull loginCusomter() return true and you go to next page
+                if (CustomerDB.loginCustomer(passedInUserName, passedInPassword)) {
+                    // Customer object with e-mail of logged in customer
+                    // Can be used on order confirmation page for finding correct userdetails
+                    loggedInCustomer.setEmail(tfEmail.getText());
 
-                    String sql =     "SELECT * FROM " + Datasource.TABLE_CUSTOMER + " " +
-                                     "WHERE " + Datasource.COLUMN_EMAIL + " = ? " +
-                                     "AND " + Datasource.COLUMN_PASSWORD + " = ?";
+                    Payment payment = new Payment();
+                    payment.start(stage2);
 
-                    PreparedStatement st = conn.prepareStatement(sql);
-                    st.setString(1, passedInUserName);
-                    st.setString(2, passedInPassword);
-
-                    ResultSet rs = st.executeQuery();
-
-                    if (rs.next()) {
-                        Payment payment = new Payment();
-                        payment.start(stage2);
-
-                    } else {
-                        lblErrorSignIn.setVisible(true);
-                        System.out.println("User not found");
-                    }
-
-                } catch (
-                        SQLException e) {
-                    System.out.println("Something went wrong: " + e.getMessage());
-                    e.printStackTrace();
+                } else {
+                    lblErrorSignIn.setVisible(true);
+                    System.out.println("User not found");
                 }
+
+
             }
         });
     }
