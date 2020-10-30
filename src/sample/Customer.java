@@ -8,6 +8,14 @@ public class Customer {
     private String phone;
     private String password;
 
+    public Customer(String firstname, String lastname, String email, String phone, String password) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+    }
+
     public String getFirstname() {
         return firstname;
     }
