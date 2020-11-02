@@ -21,19 +21,21 @@ public class OrderConfirmation extends Application {
     @Override
     public void start(Stage stage5) {
 
+        //connection String to the SQL database
         String url = "jdbc:sqlserver://sqlserverjannis.database.windows.net:1433;database=BookingDb;user=Jannis@sqlserverjannis;password={Neuseeland1};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 
+        //declaring object booking (empty object; empty constructor)
         Booking bookingConfirmation = new Booking();
 
         String identifer = "RX-6572";
 
+        // sql query for getting the needed information
         String sqlQuery2 = "SELECT * FROM bookingTicket" +
                 " WHERE BookingId = ? ";
 
         ResultSet resultSet;
 
         try (Connection connection = DriverManager.getConnection(url);
-             Statement statement = connection.createStatement();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery2)) {
 
             preparedStatement.setString(1, identifer);
@@ -42,6 +44,7 @@ public class OrderConfirmation extends Application {
 
             while (resultSet.next()) {
 
+                // filling the obejct booking with values from the database
                bookingConfirmation.setBookingID(resultSet.getString(1));
                bookingConfirmation.setDate(resultSet.getString(2));
                bookingConfirmation.setMovie(resultSet.getString(3));
