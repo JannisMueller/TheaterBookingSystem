@@ -3,6 +3,8 @@ package sample;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import static sample.bookingsdb.createBooking;
+
 
 public class Main extends Application {
 
@@ -11,7 +13,6 @@ public class Main extends Application {
         // Set up database if it does not exist
         Datasource.createCustomerDatabase();
         Datasource.createBookingsDatabase();
-
         launch(args);
     }
 

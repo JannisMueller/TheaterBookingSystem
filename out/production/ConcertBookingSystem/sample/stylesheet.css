@@ -1,0 +1,20 @@
+.root {
+    -fx-font-size: 12;
+    -fx-font-family: SansSerif;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}
+
+#header-text {
+    -fx-font-weight: Bold;
+    -fx-font-size: 20;
+    -fx-font-family: Arial;
+}
+
+#footer {
+    -fx-font-size: 60%;
+}
+
+#bold-text {
+    -fx-font-weight: Bold;
+}
