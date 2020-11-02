@@ -5,6 +5,8 @@ import java.sql.*;
 
 public class bookingsdb {
 
+
+
     private static final String url = "jdbc:sqlserver://sqlserverjannis.database.windows.net:1433;database=BookingDb;user=Jannis@sqlserverjannis;password={Neuseeland1};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 
     public static void createBooking(Booking booking) {
