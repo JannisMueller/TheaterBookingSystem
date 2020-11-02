@@ -88,6 +88,14 @@ public class SelectMovie extends Application {
         gridPane1.add(btNext,1,9);
         gridPane1.add(imageViewSF,3,1);
 
+        //Creating variables of the data that the customer out in during the booking
+        String bookingId = "RX-" + (int) (1 + Math.random() * 9999);
+        String movie = (String) cbMovie.getValue();
+        String date = String.valueOf(datePicker.getValue());
+        String numberTickets = (String) (cbTickets.getValue());
+        String seats = "Free choice of seats";
+        //int totalPrice = Integer.parseInt((String) cbTickets.getValue()) * 9;
+        int totalPrice = 36;
 
         // Creating stage etc
         Scene scene1 = new Scene(gridPane1, 450, 500);
@@ -96,29 +104,14 @@ public class SelectMovie extends Application {
         stage.show();
 
 
+
         btNext.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent actionEvent) {
-
-                try (Connection conn = DriverManager.getConnection(Datasource.CONNECTION_BOOKING_STRING);
-                     Statement statement = conn.createStatement()) {
-
-                    String bookingId = "RX-" + (int) (1 + Math.random() * 9999);
-                    String movie = (String) cbMovie.getValue();
-                    String date = String.valueOf(datePicker.getValue());
-                    String numberTickets = (String) (cbTickets.getValue());
-                    String seats = "Free choice of seats";
-                    int totalPrice = Integer.parseInt((String) cbTickets.getValue()) * 9;
-
-                    Datasource.createBooking(statement, bookingId, bookingTime, movie, date, numberTickets, seats, totalPrice);
-
-                } catch (
-                        SQLException e) {
-                    System.out.println("Something went wrong: " + e.getMessage());
-                    e.printStackTrace();
-                }
-
+                //create object for the booking
+                Booking booking = new Booking(bookingId,movie,date,numberTickets,seats,totalPrice);
+                bookingsdb.createBooking(booking);
 
                 stage.close();
                 LogInPage logInPage = new LogInPage();
