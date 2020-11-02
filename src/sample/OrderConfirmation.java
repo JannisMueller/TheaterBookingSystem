@@ -21,93 +21,84 @@ public class OrderConfirmation extends Application {
     @Override
     public void start(Stage stage5) {
 
-        //define sql string
-        String sql =     "SELECT * FROM " + Datasource.TABLE_CUSTOMER + " " +
-                        "WHERE " + Datasource.COLUMN_EMAIL + " = ? ";
+        String url = "jdbc:sqlserver://sqlserverjannis.database.windows.net:1433;database=BookingDb;user=Jannis@sqlserverjannis;password={Neuseeland1};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 
-        String sql2 = "SELECT * FROM " + Datasource.TABLE_BOOKINGS+ " " +
-                    "ORDER BY " + Datasource.COLUMN_TIME_BOOKING+ " " +
-                    " DESC LIMIT 1";
+        Booking bookingConfirmation = new Booking();
 
-        String passedInUserName = LogInPage.tfEmail.getText();
+        String identifer = "RX-6572";
 
-        try {
-            Connection conn = null;
-            ResultSet result = null;
-            PreparedStatement preparedStatements = null;
+        String sqlQuery2 = "SELECT * FROM bookingTicket" +
+                " WHERE BookingId = ? ";
 
-            // Connection to user db
-            conn = DriverManager.getConnection(Datasource.CONNECTION_STRING);
-            preparedStatements = conn.prepareStatement(sql);
+        ResultSet resultSet;
 
-            preparedStatements.setString(1,passedInUserName);
+        try (Connection connection = DriverManager.getConnection(url);
+             Statement statement = connection.createStatement();
+             PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery2)) {
 
-            result= preparedStatements.executeQuery();
+            preparedStatement.setString(1, identifer);
 
-            String firstName = result.getString(Datasource.COLUMN_FIRSTNAME);
-            String lastName = result.getString(Datasource.COLUMN_LASTNAME);
-            String email = result.getString(Datasource.COLUMN_EMAIL);
-            String phone = result.getString(Datasource.COLUMN_PHONE);
+            resultSet = preparedStatement.executeQuery();
 
-            preparedStatements.close();
-            result.close();
-            conn.close();
+            while (resultSet.next()) {
 
-            //connection to bookings db
-            conn = DriverManager.getConnection(Datasource.CONNECTION_BOOKING_STRING);
-            preparedStatements = conn.prepareStatement(sql2);
-            result= preparedStatements.executeQuery();
+               bookingConfirmation.setBookingID(resultSet.getString(1));
+               bookingConfirmation.setDate(resultSet.getString(2));
+               bookingConfirmation.setMovie(resultSet.getString(3));
+               bookingConfirmation.setNumberOfTickets(resultSet.getString(4));
+               bookingConfirmation.setSeats(resultSet.getString(5));
+               bookingConfirmation.setTotalPrice(resultSet.getInt(6));
+               bookingConfirmation.setFirstName("Jannis");
+               bookingConfirmation.setLastName("Mueller");
+               bookingConfirmation.setEmail("jannis@muller.de");
+               bookingConfirmation.setPhone("042695423");
 
-            String resultBookingId = result.getString(Datasource.COLUMN_BOOKING_ID);
-            String resultMovie = result.getString(Datasource.COLUMN_MOVIE);
-            String resultDate = result.getString(Datasource.COLUMN_DATEMOVIE);
-            String resultNumberTickets = result.getString(Datasource.COLUMN_NUMBER_TICKETS);
-            String resultSeats = result.getString(Datasource.COLUMN_SEATS);
-            String resultTotalPrice= result.getString(Datasource.COLUMN_TOTAL_PRICE);
+            }
+        }
 
-            preparedStatements.close();
-            result.close();
-            conn.close();
+        catch (SQLException e){
+            e.printStackTrace();
+        }
 
 
             Text bookingInformation = new Text("Booking Details");
             bookingInformation.setId("header-text");
 
             Label bookingId = new Label("Booking number");
-            Text txtBookingId = new Text(resultBookingId);
+            Text txtBookingId = new Text(bookingConfirmation.getBookingID());
             bookingId.setId("bold-text");
 
             Label nameFilm = new Label("Movie");
-            Text txtNameFilm = new Text(resultMovie);
+            Text txtNameFilm = new Text(bookingConfirmation.getMovie());
             nameFilm.setId("bold-text");
 
             Label date = new Label("Date");
-            Text txtDate = new Text(resultDate);
+            Text txtDate = new Text(bookingConfirmation.getDate());
             date.setId("bold-text");
 
             Label numberTickets = new Label("Number of Tickets");
-            Text txtNumberTickets = new Text(resultNumberTickets);
+            Text txtNumberTickets = new Text(bookingConfirmation.getNumberOfTickets());
             numberTickets.setId("bold-text");
 
             Label seat = new Label("Seat");
-            Text txtSeat = new Text(resultSeats);
+            Text txtSeat = new Text(bookingConfirmation.getSeats());
             seat.setId("bold-text");
 
             Label totalPrice = new Label("Total Price");
-            Text txtTotalPrice = new Text(resultTotalPrice + " €");
+            Text txtTotalPrice = new Text(bookingConfirmation.getTotalPrice() + " €");
             totalPrice.setId("bold-text");
 
             Label nameCustomer = new Label("Name");
             nameCustomer.setStyle("-fx-font-weight: bold");
-            Text txtNameCustomer = new Text(firstName + " " + lastName);
+            Text txtNameCustomer = new Text(bookingConfirmation.getFirstName() + " " + bookingConfirmation.getLastName());
             nameCustomer.setId("bold-text");
 
             Label emailCustomer = new Label("Email-Address");
-            Text txtEmailCustomer = new Text(email);
+            Text txtEmailCustomer = new Text(bookingConfirmation.getEmail());
             emailCustomer.setId("bold-text");
 
             Label phoneCustomer = new Label("Phone Number");
-            Text txtPhoneCustomer = new Text(phone);
+            Text txtPhoneCustomer = new Text(bookingConfirmation.getPhone());
             phoneCustomer.setId("bold-text");
 
             Text sendAsEmail = new Text("Send tickets to a friend?");
@@ -205,10 +196,5 @@ public class OrderConfirmation extends Application {
                 }
             });
 
-        } catch (
-                SQLException e) {
-            System.out.println("Something went wrong: " + e.getMessage());
-            e.printStackTrace();
-        }
     }
 }

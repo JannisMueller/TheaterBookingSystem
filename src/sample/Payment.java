@@ -117,7 +117,7 @@ public class Payment extends Application {
                     stage5.start(stage4);
 
                 } else {
-                    terms.setStyle("-fx-text-fill: red");
+                    terms.setStyle("-fx-text-fill: #ff0000");
                 }
             }
         });
