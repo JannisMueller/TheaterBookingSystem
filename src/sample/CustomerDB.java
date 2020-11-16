@@ -16,13 +16,13 @@ public class CustomerDB {
         String password = newCustomer.getPassword();
         String phone = newCustomer.getPhone();
 
-        String sql =    "INSERT INTO customer (FirstName, LastName, Email, Password, Phone) " +
-                        "VALUES " +
-                        "(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO customer (FirstName, LastName, Email, Password, Phone) " +
+                     "VALUES " +
+                     "(?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(connectionUrl);
-            Statement statement = conn.createStatement();
-            PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+             Statement statement = conn.createStatement();
+             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
             preparedStatement.setString(1, firstname);
             preparedStatement.setString(2, lastname);
@@ -37,7 +37,6 @@ public class CustomerDB {
             System.out.println(e.getMessage());
         }
 
-
     }
 
     public static boolean loginCustomer(String username, String password) {
@@ -47,16 +46,15 @@ public class CustomerDB {
                         "WHERE Email = ? " +
                         "AND Password = ?";
 
-        try(Connection conn = DriverManager.getConnection(connectionUrl);
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            ) {
+        try (Connection conn = DriverManager.getConnection(connectionUrl);
+             PreparedStatement preparedStatement = conn.prepareStatement(sql);) {
 
-            preparedStatement.setString(1,username);
-            preparedStatement.setString(2,password);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 System.out.println("User details correct!");
                 resultSet.close();
                 return true;
@@ -67,17 +65,15 @@ public class CustomerDB {
                 return false;
             }
 
-
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
 
 
-        }
-
-
     }
+
+
+}
 
 

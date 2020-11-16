@@ -111,6 +111,7 @@ public class CreateAccount extends Application {
         gridPane.add(lblLastName, 1, 7);
         gridPane.add(tfLastName, 2, 7);
 
+
         gridPane.add(lblEmail, 1, 8);
         gridPane.add(tfEmail, 2, 8);
 
