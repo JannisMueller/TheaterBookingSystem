@@ -58,25 +58,11 @@ public class CreateAccount extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
 
-                // Connect to db
-                try (Connection conn = DriverManager.getConnection(Datasource.CONNECTION_STRING);
-                     Statement statement = conn.createStatement()) {
+                // Create object from data entered by Customer
+                Customer newCustomer = new Customer(tfFirstName.getText(), tfLastName.getText(), tfEmail.getText(), tfPhone.getText(), pfPassword.getText());
 
-                    // Save customer data to Strings for easier readability
-                    String firstname = tfFirstName.getText();
-                    String lastname = tfLastName.getText();
-                    String email = tfEmail.getText();
-                    String phone = tfPhone.getText();
-                    String password = pfPassword.getText();
-
-                    // Creates a position in the customer db
-                    Datasource.createCustomer(statement, firstname, lastname, email, phone, password);
-
-                } catch (
-                        SQLException e) {
-                    System.out.println("Something went wrong: " + e.getMessage());
-                    e.printStackTrace();
-                }
+                // Passing object to method that creates the user in database
+                CustomerDB.createCustomer(newCustomer);
 
                 // Alert pop-up notifying that account was created
                 Alert alertAccountCreated = new Alert(Alert.AlertType.INFORMATION);
@@ -124,6 +110,7 @@ public class CreateAccount extends Application {
 
         gridPane.add(lblLastName, 1, 7);
         gridPane.add(tfLastName, 2, 7);
+
 
         gridPane.add(lblEmail, 1, 8);
         gridPane.add(tfEmail, 2, 8);
