@@ -29,9 +29,10 @@ public class OrderConfirmation extends Application {
 
         String identifer = "RX-6572";
 
-        // sql query for getting the needed information
+        //sql query for getting the needed information
         String sqlQuery2 = "SELECT * FROM bookingTicket" +
                 " WHERE BookingId = ? ";
+
 
         ResultSet resultSet;
 
