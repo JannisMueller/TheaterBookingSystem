@@ -17,6 +17,7 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 
 public class SelectMovie extends Application {
+    public static Booking booking = new Booking();
 
     public void start(Stage stage) {
 
@@ -39,9 +40,9 @@ public class SelectMovie extends Application {
         Text tMovie = new Text("Select movie: ");
         ObservableList<String> optionsMovies =
                 FXCollections.observableArrayList(
-                        "Hamlet (25€)",
-                        "Tennet (32€)",
-                        "Alfons Aberg (12€)"
+                        "Hamlet (9€)",
+                        "Tennet (9€)",
+                        "Alfons Aberg (9€)"
                 );
         ComboBox cbMovie = new ComboBox(optionsMovies);
         cbMovie.setPromptText("Select Movie");
@@ -103,16 +104,13 @@ public class SelectMovie extends Application {
             public void handle(ActionEvent actionEvent) {
 
                 //Creating variables of the data that the customer out in during the booking
-                String bookingId = "RX-" + (int) (1 + Math.random() * 9999);
-                String movie = String.valueOf(cbMovie.getValue());
-                String date = (String.valueOf(datePicker.getValue()));
-                String numberTickets = (String) (cbTickets.getValue());
-                String seats = "Free choice of seats";
-                int totalPrice = Integer.parseInt((String) cbTickets.getValue()) * 9;
+                booking.setBookingID( "RX-" + (int) (1 + Math.random() * 9999));
+                booking.setMovie(String.valueOf(cbMovie.getValue()));
+                booking.setDate(String.valueOf(datePicker.getValue()));
+                booking.setNumberOfTickets((String) (cbTickets.getValue()));
+                booking.setSeats("Free choice of seats");
+                booking.setTotalPrice(Integer.parseInt((String) cbTickets.getValue()) * 9);
 
-
-                //create object for the booking
-                Booking booking = new Booking(bookingId,movie,date,numberTickets,seats,totalPrice);
                 bookingsdb.createBooking(booking);
 
                 stage.close();

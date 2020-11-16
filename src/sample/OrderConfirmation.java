@@ -21,6 +21,8 @@ public class OrderConfirmation extends Application {
     @Override
     public void start(Stage stage5) {
 
+        CustomerDB.updateLoggedinCustomer(LogInPage.loggedInCustomer);
+
         //connection String to the SQL database
         String url = "jdbc:sqlserver://sqlserverjannis.database.windows.net:1433;database=BookingDb;user=Jannis@sqlserverjannis;password={Neuseeland1};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 
@@ -28,13 +30,11 @@ public class OrderConfirmation extends Application {
         //declaring object booking (empty object; empty constructor)
         Booking bookingConfirmation = new Booking();
 
-        String identifer = LogInPage.loggedInCustomer.getEmail();
+        String identifier = SelectMovie.booking.getBookingID();
 
         //sql query for getting the needed information
         String sqlQuery2 = "SELECT * FROM bookingTicket" +
                 " WHERE BookingId = ? ";
-
-
 
 
         ResultSet resultSet;
@@ -42,7 +42,7 @@ public class OrderConfirmation extends Application {
         try (Connection connection = DriverManager.getConnection(url);
              PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery2)) {
 
-            preparedStatement.setString(1, identifer);
+            preparedStatement.setString(1, identifier);
 
             resultSet = preparedStatement.executeQuery();
 
@@ -55,10 +55,10 @@ public class OrderConfirmation extends Application {
                bookingConfirmation.setNumberOfTickets(resultSet.getString(4));
                bookingConfirmation.setSeats(resultSet.getString(5));
                bookingConfirmation.setTotalPrice(resultSet.getInt(6));
-               bookingConfirmation.setFirstName("Jannis");
-               bookingConfirmation.setLastName("Mueller");
-               bookingConfirmation.setEmail("jannis@muller.de");
-               bookingConfirmation.setPhone("042695423");
+               bookingConfirmation.setFirstName(LogInPage.loggedInCustomer.getFirstname());
+               bookingConfirmation.setLastName(LogInPage.loggedInCustomer.getLastname());
+               bookingConfirmation.setEmail(LogInPage.loggedInCustomer.getEmail());
+               bookingConfirmation.setPhone(LogInPage.loggedInCustomer.getPhone());
 
             }
         }
