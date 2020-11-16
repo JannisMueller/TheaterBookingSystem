@@ -17,8 +17,8 @@ public class CustomerDB {
         String phone = newCustomer.getPhone();
 
         String sql = "INSERT INTO customer (FirstName, LastName, Email, Password, Phone) " +
-                     "VALUES " +
-                     "(?, ?, ?, ?, ?)";
+                "VALUES " +
+                "(?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(connectionUrl);
              Statement statement = conn.createStatement();
@@ -41,10 +41,10 @@ public class CustomerDB {
 
     public static boolean loginCustomer(String username, String password) {
 
-        String sql =    "SELECT Email, Password " +
-                        "FROM Customer " +
-                        "WHERE Email = ? " +
-                        "AND Password = ?";
+        String sql = "SELECT Email, Password " +
+                "FROM Customer " +
+                "WHERE Email = ? " +
+                "AND Password = ?";
 
         try (Connection conn = DriverManager.getConnection(connectionUrl);
              PreparedStatement preparedStatement = conn.prepareStatement(sql);) {
@@ -73,7 +73,43 @@ public class CustomerDB {
 
     }
 
+    public static void updateLoggedinCustomer(Customer loggedInCustomer) {
 
+
+        String sql = "SELECT Firstname, Lastname, Email " +
+                "FROM Customer " +
+                "WHERE Email = ? ";
+
+        try (Connection conn = DriverManager.getConnection(connectionUrl);
+             PreparedStatement preparedStatement = conn.prepareStatement(sql);) {
+
+            preparedStatement.setString(1, LogInPage.loggedInCustomer.getEmail());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                String firstname = resultSet.getString(1);
+                System.out.println(firstname);
+                LogInPage.loggedInCustomer.setFirstname(firstname);
+
+                String lastname = resultSet.getString(2);
+                System.out.println(lastname);
+                LogInPage.loggedInCustomer.setLastname(lastname);
+
+                String email = resultSet.getString(3);
+                System.out.println(email);
+                LogInPage.loggedInCustomer.setEmail(email);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            e.getMessage();
+        }
+
+
+    }
 }
 
 
