@@ -39,9 +39,9 @@ public class SelectMovie extends Application {
         Text tMovie = new Text("Select movie: ");
         ObservableList<String> optionsMovies =
                 FXCollections.observableArrayList(
-                        "Batman (9€)",
-                        "Goodfellas (9€)",
-                        "Beck (9€)"
+                        "Hamlet (25€)",
+                        "Tennet (32€)",
+                        "Alfons Aberg (12€)"
                 );
         ComboBox cbMovie = new ComboBox(optionsMovies);
         cbMovie.setPromptText("Select Movie");
@@ -89,9 +89,6 @@ public class SelectMovie extends Application {
         gridPane1.add(imageViewSF,3,1);
 
 
-
-
-
         // Creating stage etc
         Scene scene1 = new Scene(gridPane1, 450, 500);
         scene1.getStylesheets().add("sample/stylesheet.css");
@@ -108,7 +105,6 @@ public class SelectMovie extends Application {
                 //Creating variables of the data that the customer out in during the booking
                 String bookingId = "RX-" + (int) (1 + Math.random() * 9999);
                 String movie = String.valueOf(cbMovie.getValue());
-                String movieTest = String.valueOf(cbMovie.getUserData());
                 String date = (String.valueOf(datePicker.getValue()));
                 String numberTickets = (String) (cbTickets.getValue());
                 String seats = "Free choice of seats";

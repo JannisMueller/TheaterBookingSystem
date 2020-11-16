@@ -24,14 +24,17 @@ public class OrderConfirmation extends Application {
         //connection String to the SQL database
         String url = "jdbc:sqlserver://sqlserverjannis.database.windows.net:1433;database=BookingDb;user=Jannis@sqlserverjannis;password={Neuseeland1};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 
+
         //declaring object booking (empty object; empty constructor)
         Booking bookingConfirmation = new Booking();
 
-        String identifer = "RX-6572";
+        String identifer = LogInPage.loggedInCustomer.getEmail();
 
         //sql query for getting the needed information
         String sqlQuery2 = "SELECT * FROM bookingTicket" +
                 " WHERE BookingId = ? ";
+
+
 
 
         ResultSet resultSet;

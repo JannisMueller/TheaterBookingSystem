@@ -9,10 +9,6 @@ import static sample.bookingsdb.createBooking;
 public class Main extends Application {
 
     public static void main(String[] args) {
-
-        // Set up database if it does not exist
-        Datasource.createCustomerDatabase();
-        Datasource.createBookingsDatabase();
         launch(args);
     }
 
